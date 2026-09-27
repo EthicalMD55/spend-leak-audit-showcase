@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Spend Leak Audit — Portfolio Showcase</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --panel: #1e293b;
+    --panel-2: #273449;
+    --ink: #e2e8f0;
+    --muted: #94a3b8;
+    --accent: #38bdf8;
+    --green: #4ade80;
+    --amber: #fbbf24;
+    --red: #f87171;
+    --border: #334155;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                 Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 40px 32px 72px;
+  }
+  header {
+    text-align: center;
+    padding: 24px 0 32px;
+  }
+  header h1 {
+    margin: 0 0 8px;
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  header .subtitle {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  .divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border), transparent);
+    margin: 36px 0;
+  }
+  .section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--accent);
+    margin: 0 0 14px;
+  }
+  .section-title + p {
+    margin-top: 0;
+    margin-bottom: 18px;
+    color: var(--muted);
+  }
+  /* Hero metric cards */
+  .metrics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 14px;
+    margin: 24px 0 8px;
+  }
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    text-align: center;
+  }
+  .card-label {
+    color: var(--muted);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 8px;
+  }
+  .card-value {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .card-value .big-money {
+    font-size: 30px;
+  }
+  .card-sub {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 6px;
+  }
+  .accent { color: var(--accent); }
+  .green { color: var(--green); }
+  .amber { color: var(--amber); }
+  .red { color: var(--red); }
+  /* Trust model */
+  .trust-model {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 26px 28px;
+    margin: 24px 0;
+  }
+  .trust-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+    margin-top: 18px;
+  }
+  .trust-step {
+    text-align: center;
+  }
+  .trust-step .num {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 auto 8px;
+  }
+  .trust-step .label {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .trust-arrow {
+    display: none;
+    align-items: center;
+    color: var(--border);
+    font-size: 20px;
+    margin-top: 16px;
+  }
+  @media (min-width: 640px) {
+    .trust-arrow { display: flex; }
+  }
+  /* Banner boxes */
+  .banner {
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 18px 0 8px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .banner-demo {
+    background: #451a03;
+    border: 1px solid var(--red);
+    color: #fee2e2;
+  }
+  .banner-warn {
+    background: #1e3a8a;
+    border: 1px solid var(--amber);
+    color: #fef3c7;
+  }
+  .banner-info {
+    background: #0f2a47;
+    border: 1px solid var(--border);
+    color: var(--ink);
+  }
+  /* Demo button */
+  .demo-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--accent);
+    color: #0f172a;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 14px 28px;
+    border-radius: 10px;
+    border: none;
+    margin: 10px 0 4px;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .demo-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 24px rgba(56, 189, 248, 0.35);
+  }
+  .center { text-align: center; }
+  .cta-wrap {
+    text-align: center;
+    margin: 32px 0;
+  }
+  /* Feature list */
+  .feature-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 18px 0;
+  }
+  .feature-item {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    font-size: 14px;
+  }
+  .feature-item .dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green);
+    margin-right: 8px;
+  }
+  ul { padding-left: 22px; }
+  li { margin: 5px 0; }
+  .muted { color: var(--muted); }
+  footer {
+    margin-top: 42px;
+    color: var(--muted);
+    font-size: 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+    text-align: center;
+  }
+  .pill {
+    display: inline-block;
+    background: var(--panel-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 12px;
+    font-size: 11px;
+    margin: 4px 4px 0 0;
+  }
+  .pill-private { background: #451a03; color: var(--red); border-color: var(--red); }
+  .pill-demo { background: #064e3b; color: var(--green); border-color: var(--green); }
+  @media print {
+    body { background: #fff; color: #000; }
+    .wrap { padding: 0; }
+    .card, .trust-model, .banner, table, .feature-item { color: #000; }
+    .card, .trust-model, .banner, .feature-item { background: #fff !important; border-color: #000; }
+    .demo-btn { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Spend Leak Audit</h1>
+    <p class="subtitle">
+      A deterministic SaaS spend-audit system that identifies potential
+      software-spend waste from structured billing and usage data.
+    </p>
+  </header>
+
+  <div class="cta-wrap">
+    <a href="demo-report.html" class="demo-btn">View Demo Report</a>
+  </div>
+
+  <div class="divider"></div>
+
+  <h2 class="section-title">What this demonstrates</h2>
+  <p class="muted">
+    The system surfaces spend-leak signals from vendor spend, usage, and
+    license data — then stops and hands findings to a human for verification.
+  </p>
+  <div class="feature-list">
+    <div class="feature-item"><span class="dot"></span>Vendor-spend analysis</div>
+    <div class="feature-item"><span class="dot"></span>Usage and license review signals</div>
+    <div class="feature-item"><span class="dot"></span>Duplicate/overlap safeguards</div>
+    <div class="feature-item"><span class="dot"></span>Currency mismatch detection</div>
+    <div class="feature-item"><span class="dot"></span>Traceable findings</div>
+    <div class="feature-item"><span class="dot"></span>Human-verification-first recommendations</div>
+    <div class="feature-item"><span class="dot"></span>Markdown/HTML client reporting</div>
+  </div>
+
+  <h2 class="section-title">Demo metrics</h2>
+  <p class="muted">
+    Generated from a single fictional pilot audit run against synthetic data.
+  </p>
+  <div class="metrics">
+    <div class="card">
+      <div class="card-label">Total Spend Analyzed (USD)</div>
+      <div class="card-value big-money">$183,348</div>
+      <div class="card-sub muted">66 findings total</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Potential Reduction Identified</div>
+      <div class="card-value big-money green">$48,324</div>
+      <div class="card-sub muted">7 quantified findings</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Findings Requiring Review</div>
+      <div class="card-value big-money amber">56</div>
+      <div class="card-sub muted">NEEDS HUMAN VERIFICATION</div>
+    </div>
+    <div class="card">
+      <div class="card-label">Data-Quality Issues</div>
+      <div class="card-value big-money red">3</div>
+      <div class="card-sub muted">excluded from savings total</div>
+    </div>
+  </div>
+
+  <div class="banner banner-demo">
+    <strong>DEMO — FICTIONAL / SYNTHETIC DATA — NOT A REAL CUSTOMER</strong><br>
+    All figures are illustrative estimates generated from synthetic fixture
+    data. Potential savings are <strong>not real customer results</strong>
+    and are <strong>not guaranteed</strong> under any circumstances.
+  </div>
+
+  <h2 class="section-title">Trust model</h2>
+  <div class="trust-model">
+    <p class="muted">
+      The system is designed to keep every step transparent and to stop
+      before producing an actionable recommendation. Potential savings are
+      upper-bound estimates that only become recommendations after a human
+      confirms the underlying data signal.
+    </p>
+    <div class="trust-steps">
+      <div class="trust-step">
+        <div class="num">1</div>
+        <div class="label">Data signal<br><span class="muted">(usage, license, spend)</span></div>
+      </div>
+      <div class="trust-step">
+        <div class="num">2</div>
+        <div class="label">Potential reduction<br><span class="muted">(deterministic upper bound)</span></div>
+      </div>
+      <div class="trust-step">
+        <div class="num">3</div>
+        <div class="label">Human verification<br><span class="muted">(required before action)</span></div>
+      </div>
+    </div>
+    <div class="trust-arrow">→ → →</div>
+    <div class="center muted" style="font-size:13px; margin-top:14px;">
+      The system does not claim guaranteed savings or automatically cancel services.
+    </div>
+  </div>
+
+  <div class="banner banner-warn">
+    <strong>Potential savings require human verification.</strong>
+    Every quantified figure is an upper bound derived from deterministic rules
+    against the supplied data — not a guaranteed outcome. Actual results depend
+    on seat usage, contract terms, shared accounts, cancellation policies, and
+    other factors confirmed only by a human reviewer.
+  </div>
+
+  <h2 class="section-title">About this showcase</h2>
+  <div class="banner banner-info">
+    The full audit engine and production-oriented implementation are kept
+    <strong>private and proprietary</strong>. This repository is
+    <strong>showcase-only</strong> and contains the demo report artifact and
+    this landing page. No source code or proprietary logic is included here.
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="cta-wrap">
+    <a href="demo-report.html" class="demo-btn">View Demo Report</a>
+  </div>
+
+  <footer>
+    <span class="pill">Spend Leak Audit</span>
+    <span class="pill pill-demo">DEMO — SYNTHETIC DATA</span>
+    <span class="pill pill-private">PRIVATE IMPLEMENTATION</span>
+    <span class="muted">Showcase repository — synthetic data, demonstration only.</span>
+  </footer>
+
+</div>
+</body>
+</html>
